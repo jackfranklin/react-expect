@@ -1,9 +1,9 @@
 const assertionsPass = fn => {
   try {
     fn();
-    return true;
+    return [ true ];
   } catch (e) {
-    return false;
+    return [ false, e.message ];
   }
 }
 

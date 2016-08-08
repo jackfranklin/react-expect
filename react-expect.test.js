@@ -12,4 +12,15 @@ describe('Testing a component has an element with text inside', () => {
       message: 'Expected component to render a `p` with `Hello World`'
     });
   });
+
+  it('fails when the element does not pass the test', () => {
+    const App = () => React.createElement('p', null, 'Hey World');
+
+    const test = expect(App).toRender('p').withText('Hello World').exec();
+    assert.deepEqual(test, {
+      passed: false,
+      message: 'Expected component to render a `p` with `Hello World`',
+      errorMessage: '\'Hey World\' == \'Hello World\''
+    });
+  });
 });

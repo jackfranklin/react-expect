@@ -14,11 +14,11 @@ const runExpectation = ({ component, props, children }, expectation) => {
 
   if (expectation.hasOwnProperty('text')) {
     const renderedText = elem.text();
-    const result = assertionsPass(() => {
+    const [ result, errorMessage ] = assertionsPass(() => {
       assert.equal(renderedText, expectation.text);
     });
 
-    return makeResult(result, expectation);
+    return makeResult(result, expectation, errorMessage);
   }
 }
 
