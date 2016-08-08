@@ -23,4 +23,7 @@ describe('Testing a component has an element with text inside', () => {
       errorMessage: '\'Hey World\' == \'Hello World\''
     });
   });
+
+  it('can deal with the element being wrong', () => {
+  });
 });
