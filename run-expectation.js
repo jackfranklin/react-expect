@@ -43,16 +43,18 @@ const runExpectation = ({ component, props, children }, expectation) => {
     });
   }
 
-  if (expectation.hasOwnProperty('prop')) {
-    const prop = elem.prop(expectation.prop.name);
-    const [ result, errorMessage ] = assertionsPass(() => {
-      assert.equal(prop, expectation.prop.value);
-    });
+  if (expectation.hasOwnProperty('props')) {
+    Object.keys(expectation.props).forEach(prop => {
+      const elemProp = elem.prop(prop);
+      const [ result, errorMessage ] = assertionsPass(() => {
+        assert.equal(elemProp, expectation.props[prop]);
+      });
 
-    assertions.push({
-      passed: result,
-      text: `withProp ${expectation.prop.name}, expected value: ${expectation.prop.value}`,
-      errorMessage
+      assertions.push({
+        passed: result,
+        text: `withProp ${prop}, expected value: ${expectation.props[prop]}`,
+        errorMessage
+      });
     });
   }
 

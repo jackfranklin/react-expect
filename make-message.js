@@ -7,8 +7,11 @@ const makeMessage = expectation => {
     messageParts.push(`with text \`${expectation.text}\``);
   }
 
-  if (expectation.hasOwnProperty('prop')) {
-    messageParts.push(`with prop \`${expectation.prop.name}\` having value \`${expectation.prop.value}\``);
+  if (expectation.hasOwnProperty('props')) {
+    Object.keys(expectation.props).forEach(prop => {
+      const val = expectation.props[prop];
+      messageParts.push(`with prop \`${prop}\` having value \`${val}\``);
+    });
   }
 
   const [first, second, ...rest] = messageParts;

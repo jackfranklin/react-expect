@@ -22,10 +22,8 @@ class ReactExpect {
   }
 
   withProp(name, value) {
-    this.expectation.prop = {
-      name,
-      value
-    }
+    this.expectation.props = this.expectation.props || {};
+    this.expectation.props[name] = value;
     return this;
   }
 

@@ -58,6 +58,9 @@ describe('Testing a component has an element with text inside', () => {
     assert(test.passed);
   });
 
+});
+
+describe('finding props', () => {
   it('can find props', () => {
     const App = () => React.createElement('div', { className: 'foo' }, 'Hello');
 
@@ -73,6 +76,31 @@ describe('Testing a component has an element with text inside', () => {
     });
   });
 
+  it('can deal with multiple prop assertions', () => {
+    const App = () => React.createElement('div', { className: 'foo', id: 'bar' }, 'Hello');
+
+    const test = expect(App).toRender('div')
+      .withProp('className', 'foo')
+      .withProp('id', 'bar')
+      .exec();
+
+    assert.deepEqual(test, {
+      passed: true,
+      message: 'Expected component to render a `div` with prop `className` having value `foo` and with prop `id` having value `bar`',
+      assertions: [{
+        errorMessage: undefined,
+        passed: true,
+        text: 'withProp className, expected value: foo'
+      }, {
+        errorMessage: undefined,
+        passed: true,
+        text: 'withProp id, expected value: bar'
+      }]
+    });
+  });
+});
+
+describe('making multiple assertions', () => {
   it('can deal looking for a prop and text', () => {
     const App = () => React.createElement('div', { className: 'foo' }, 'Hello');
 
