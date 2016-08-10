@@ -34,4 +34,24 @@ describe('Testing a component has an element with text inside', () => {
       errorMessage: 'Couldn\'t find a `h1` component'
     });
   });
+
+  it('can find the element if it is nested', () => {
+    const App = () => React.createElement('div', null,
+      React.createElement('h1', null, 'Title'),
+      React.createElement('p', null, 'Hello World')
+    );
+
+    const test = expect(App).toRender('p').withText('Hello World').exec();
+    assert(test.passed);
+  });
+
+  it('can find props', () => {
+    const App = () => React.createElement('div', { className: 'foo' }, 'Hello');
+
+    const test = expect(App).toRender('div').withProp('className', 'foo').exec();
+    assert.deepEqual(test, {
+      passed: true,
+      message: 'Expected component to render a `div` with prop `className` having value `foo`'
+    });
+  });
 });

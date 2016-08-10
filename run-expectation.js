@@ -16,6 +16,15 @@ const runExpectation = ({ component, props, children }, expectation) => {
     return makeResult(false, expectation, `Couldn't find a \`${expectation.toRender}\` component`);
   }
 
+  if (expectation.hasOwnProperty('prop')) {
+    const prop = elem.prop(expectation.prop.name);
+    const [ result, errorMessage ] = assertionsPass(() => {
+      assert.equal(prop, expectation.prop.value);
+    });
+
+    return makeResult(result, expectation, errorMessage);
+  }
+
   if (expectation.hasOwnProperty('text')) {
     const renderedText = elem.text();
     const [ result, errorMessage ] = assertionsPass(() => {

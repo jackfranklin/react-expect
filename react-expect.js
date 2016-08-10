@@ -21,6 +21,14 @@ class ReactExpect {
     return this;
   }
 
+  withProp(name, value) {
+    this.expectation.prop = {
+      name,
+      value
+    }
+    return this;
+  }
+
   exec() {
     return runExpectation(this.testComponent, this.expectation);
   }
