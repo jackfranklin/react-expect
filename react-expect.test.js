@@ -25,5 +25,13 @@ describe('Testing a component has an element with text inside', () => {
   });
 
   it('can deal with the element being wrong', () => {
+    const App = () => React.createElement('p', null, 'Hey World');
+
+    const test = expect(App).toRender('h1').withText('Hello World').exec();
+    assert.deepEqual(test, {
+      passed: false,
+      message: 'Expected component to render a `h1` with `Hello World`',
+      errorMessage: 'Couldn\'t find a `h1` component'
+    });
   });
 });
