@@ -3,7 +3,7 @@ const assertionsPass = fn => {
     fn();
     return [ true ];
   } catch (e) {
-    return [ false, e.message ];
+    return [ false, `Assertion failed: ${e.message}` ];
   }
 }
 

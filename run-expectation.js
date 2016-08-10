@@ -1,5 +1,5 @@
 const assertionsPass = require('./assertions-pass');
-const makeResult = require('./make-result');
+const makeMessage = require('./make-message');
 const TestUtils = require('react-addons-test-utils');
 const React = require('react');
 const enzyme = require('enzyme');
@@ -10,10 +10,37 @@ const runExpectation = ({ component, props, children }, expectation) => {
     React.createElement(component, props, children)
   );
 
+  let assertions = [];
+  let message = makeMessage(expectation);
+
   const elem = wrapper.find(expectation.toRender);
 
   if (elem.length === 0) {
-    return makeResult(false, expectation, `Couldn't find a \`${expectation.toRender}\` component`);
+    assertions.push({
+      passed: false,
+      text: `toRender expected value: ${expectation.toRender}`,
+      errorMessage: `Assertion failed: component does not render a \`${expectation.toRender}\` element`
+    });
+
+    return {
+      passed: assertions.every(a => a.passed),
+      message,
+      assertions
+    }
+  }
+
+
+  if (expectation.hasOwnProperty('text')) {
+    const renderedText = elem.text();
+    const [ result, errorMessage ] = assertionsPass(() => {
+      assert.equal(renderedText, expectation.text);
+    });
+
+    assertions.push({
+      passed: result,
+      text: `withText expected value: ${expectation.text}`,
+      errorMessage
+    });
   }
 
   if (expectation.hasOwnProperty('prop')) {
@@ -22,16 +49,17 @@ const runExpectation = ({ component, props, children }, expectation) => {
       assert.equal(prop, expectation.prop.value);
     });
 
-    return makeResult(result, expectation, errorMessage);
+    assertions.push({
+      passed: result,
+      text: `withProp ${expectation.prop.name}, expected value: ${expectation.prop.value}`,
+      errorMessage
+    });
   }
 
-  if (expectation.hasOwnProperty('text')) {
-    const renderedText = elem.text();
-    const [ result, errorMessage ] = assertionsPass(() => {
-      assert.equal(renderedText, expectation.text);
-    });
-
-    return makeResult(result, expectation, errorMessage);
+  return {
+    passed: assertions.every(a => a.passed),
+    message,
+    assertions
   }
 }
 

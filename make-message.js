@@ -4,7 +4,7 @@ const makeMessage = expectation => {
   ];
 
   if (expectation.hasOwnProperty('text')) {
-    messageParts.push(`with \`${expectation.text}\``);
+    messageParts.push(`with text \`${expectation.text}\``);
   }
 
   if (expectation.hasOwnProperty('prop')) {
@@ -22,15 +22,4 @@ const makeMessage = expectation => {
   }
 }
 
-const makeResult = (passed, expectation, errorMessage) => {
-  const resultObj = {
-    passed,
-    message: makeMessage(expectation)
-  }
-
-  if (errorMessage) resultObj.errorMessage = errorMessage;
-
-  return resultObj;
-};
-
-module.exports = makeResult;
+module.exports = makeMessage;
